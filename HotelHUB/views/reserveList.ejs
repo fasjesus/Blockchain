@@ -50,16 +50,23 @@
         th {
             background-color: #f2f2f2;
         }
+        button{
+            width: 95%;
+            padding: 6px;
+            font-size: 1.0em;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
         .reservar {
-            background-color: #52e970;
-            border-color: #52e970;
-            margin-bottom: 20px;
-            padding: 10px 50px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .reservar:hover {
-            background-color: #0f0;
-            border-color: #0f0;
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -102,7 +109,7 @@
                         <td><%= quarto.Status %></td>
                         <td>
                             <% if (quarto.Status === 'Disponível') { %>
-                                <button onclick="confirmarReserva('<%= quarto.NumeroQuarto %>', '<%= quarto.TipoQuarto %>', '<%= quarto.Preco %>')">Reservar</button>
+                                <button type="submit" class="reservar" onclick="confirmarReserva('<%= quarto.NumeroQuarto %>', '<%= quarto.TipoQuarto %>', '<%= quarto.Preco %>')">Reservar</button>
                             <% } %>                            
                         </td>
                     </tr>

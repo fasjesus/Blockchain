@@ -1,6 +1,6 @@
-# Projeto de Blockchain
-Projeto em desenvolvimento para a disciplina Tópicos Avançados em Computação 2
+# ProjetoBD
+Projeto em desenvolvimento para a disciplina Banco de Dados I
 Tema: Reserva de Quartos
-Componentes: Brenda Castro da Silva, Flávia Alessandra S. de Jesus, Israel Santana dos Anjos e Michelle Jauge.
+Componentes: Brenda Castro da Silva e Flávia Alessandra S. de Jesus.
 
 O sistema consiste em reservar quartos em um hotel. O HotelHUB, consiste em reservar quartos de dois tipos, standart e luxo. 

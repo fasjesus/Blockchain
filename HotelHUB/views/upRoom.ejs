@@ -34,22 +34,50 @@
             margin-bottom: 5px;
             font-size: 1.2em;
         }
-        input, select, button {
-            width: 100%;
-            padding: 10px;
+        input{
+            width: 95%;
+            padding: 8px;
             font-size: 1.2em;
-            margin-top: 5px;
+            margin-top: 3px;
+            margin-bottom: 5px;
+          
         }
-        button {
+        select{
+            width: 100%;
+            padding: 8px;
+            font-size: 1.2em;
+            margin-top: 3px;
+            margin-bottom: 5px;
+        }
+        .cadastrar {
+            width: 100%;
+            padding: 8px;
+            font-size: 1.2em;
+            margin-top: 3px;
+            margin-bottom: 5px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
-        button:hover {
+        .cadastrar:hover {
             background-color: #45a049;
         }
+        
+        .voltar{
+            width: 50%;
+            padding: 6px;
+            font-size: 1.0em;
+            background-color: #4c28ee;
+            color:white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 100px;      
+        }
+        
+   
     </style>
 </head>
 <body>
@@ -79,8 +107,11 @@
                 <option value="Ocupado">Ocupado</option>
             </select>
         </div>
-        <button type="submit">Cadastrar</button>
+        <button type="submit" class="cadastrar">Cadastrar</button>
+        <button type="button" class="voltar" id="back">Voltar</button>
     </form>
+   
+
     <script>
         function atualizarPreco() {
             const tipoQuarto = document.getElementById('TipoQuarto').value;
@@ -99,6 +130,11 @@
             const preco = document.getElementById('Preco');
             preco.value = preco.value.replace('R$', '').replace(',', '.');
         }
+        const back = document.getElementById('back');
+        back.addEventListener('click', () => {
+            window.location.href = '/options';
+        });
     </script>
 </body>
+        
 </html>
