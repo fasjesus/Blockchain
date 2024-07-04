@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos os Quartos</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Link para o arquivo de estilos CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Quartos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Número do Quarto</th>
+                <th>Tipo</th>
+                <th>Preço</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% quartos.forEach(quarto => { %>
+                <tr>
+                    <td><%= quarto.NumeroQuarto %></td>
+                    <td><%= quarto.TipoQuarto %></td>
+                    <td>R$ <%= quarto.Preco %></td>
+                    <td><%= quarto.Status %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    <button onclick="window.location.href='/options'">Voltar</button>
+</body>
+</html>

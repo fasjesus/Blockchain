@@ -46,56 +46,80 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 8px;
-            margin-left: 450px;      
+            margin-left: 100px;
+            margin-right: 100px;
+            justify-content: center;
+            text-align: center;      
         }
     </style>
 </head>
 <body>
     <div class="main">
-        <div class="title">
-            <h1>Histórico de Reservas</h1>
-        </div>
-
+        <h1 class="title">Histórico de Reservas</h1>
         <div class="historic">
-            <table class="table table-bordered">
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Número do Quarto</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Preço</th>
-                        <th scope="col">Data Check-in</th>
-                        <th scope="col">Data Check-out</th>
+                        <th>Número do Quarto</th>
+                        <th>Tipo</th>
+                        <th>Preço</th>
+                        <th>Data Check-in</th>
+                        <th>Data Check-out</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% reservas.forEach(reserva => { %>
-                        <tr>
-                            <td><%= reserva.NumeroQuarto %></td>
-                            <td><%= reserva.TipoQuarto %></td>
-                            <td><%= reserva.Preco %></td>
-                            <td><%= reserva.DataCheckIn %></td>
-                            <td><%= reserva.DataCheckOut %></td>
-                        </tr>
+                    <% let previousRoomNumber = null; %>
+                    <% let currentTipoQuarto = null; %>
+                    <% let subtotalTipoQuarto = 0; %>
+                    <% let totalReservas = 0; %>
+                    <% let tipoQuartoSubtotal = {}; %>
+
+                    <% reservas.forEach((reserva) => { %>
+                        <% if (reserva.TipoQuarto !== currentTipoQuarto) { %>
+                            <% if (currentTipoQuarto !== null) { %>
+                                <tr>
+
+                                    <td><strong>R$<%= parseFloat(subtotalTipoQuarto).toFixed(2) %></strong></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <% tipoQuartoSubtotal[currentTipoQuarto] = subtotalTipoQuarto; %>
+                                <% subtotalTipoQuarto = 0; %>
+                            <% } %>
+                            
+                            <% currentTipoQuarto = reserva.TipoQuarto; %>
+                        <% } %>
+
+                        <% if (reserva.Id_quarto !== previousRoomNumber) { %>
+                            <tr>
+                                <td><%= reserva.Id_quarto %></td>
+                                <td><%= reserva.TipoQuarto %></td>
+                                <td>R$<%= parseFloat(reserva.totalGasto).toFixed(2) %></td>
+                                <td><%= reserva.DataCheckIn %></td>
+                                <td><%= reserva.DataCheckOut %></td>
+                                
+                            </tr>
+                        <% } %>
+
+                        <% subtotalTipoQuarto += reserva.totalGasto; %>
+                        <% previousRoomNumber = reserva.Id_quarto; %>
                     <% }); %>
-                    
-                    <!-- Mostrar o total gasto -->
+
+
                     <tr>
-                        <td colspan="4"><strong>Total Gasto</strong></td>
-                        <td><%= totalGasto.toFixed(2) %></td>
+                        <td colspan="2"><strong>Total Gasto</strong></td>
+                        <td><strong>R$<%= parseFloat(totalGastoGeral).toFixed(2) %></strong></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Total de Reservas</strong></td>
+                        <td><%= totalReservasGeral %></td>
+                        <td colspan="2"></td>
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="voltar" id="voltar">Voltar</button>
         </div>
-
+        <button class="voltar" onclick="window.history.back()">Voltar</button>
     </div>
-
-    <script>
-        const voltar = document.getElementById('voltar');
-
-        voltar.addEventListener('click', () => {
-            window.location.href = '/options';
-        });
-    </script>
 </body>
 </html>

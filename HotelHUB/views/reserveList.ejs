@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 130vh;
             margin: 0;
         }
         .container {
@@ -50,7 +50,7 @@
         th {
             background-color: #f2f2f2;
         }
-        button{
+        button {
             width: 95%;
             padding: 6px;
             font-size: 1.0em;
@@ -64,7 +64,6 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         .reservar:hover {
             background-color: #45a049;
         }
@@ -105,7 +104,13 @@
                     <tr>
                         <td><%= quarto.NumeroQuarto %></td>
                         <td><%= quarto.TipoQuarto %></td>
-                        <td>R$<%= parseFloat(quarto.Preco).toFixed(2) %></td>
+                        <td>
+                            <% if (quarto.Preco) { %>
+                                R$<%= parseFloat(quarto.Preco).toFixed(2) %>
+                            <% } else { %>
+                                Não disponível
+                            <% } %>
+                        </td>
                         <td><%= quarto.Status %></td>
                         <td>
                             <% if (quarto.Status === 'Disponível') { %>
@@ -133,11 +138,9 @@
             window.location.href = url.slice(0, -1);
         }
 
-        function confirmarReserva(numeroQuarto, TipoQuarto, Preco) {
-            window.location.href = `/payment?numeroQuarto=${numeroQuarto}&TipoQuarto=${encodeURIComponent(TipoQuarto)}&Preco=${encodeURIComponent(Preco)}`;
+        function confirmarReserva(NumeroQuarto, TipoQuarto, Preco) {
+            window.location.href = `/payment?NumeroQuarto=${NumeroQuarto}&TipoQuarto=${encodeURIComponent(TipoQuarto)}&Preco=${encodeURIComponent(Preco)}`;
         }
-
- 
     </script>
 </body>
 </html>

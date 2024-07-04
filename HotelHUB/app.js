@@ -1,6 +1,10 @@
 /*
+    Projeto de Banco de Dados feito por Brenda Castro da Silva e Flavia Alessandra de Jesus.
+
     Para iniciar o npm use este comando no terminal na pasta do seu projeto: npm init -y
-    Para instalar as dependências necessárias use o comando no terminal na pasta em que seu projeto está: npm install express ejs mysql2 express-session body-parser
+    Para instalar as dependências necessárias use o comando no terminal na pasta em que seu projeto está: npm install express ejs mysql2 
+                                                                                                          express-session body-parser
+                                                                                                          npm install node-schedule
     Para executar esse código digite no terminal o comando: node app.js
     Para ver o resultado, vá no seu navegador e entre no link: http://localhost:3000
     Para finalizar clique em ctrl + c no terminal
@@ -13,6 +17,7 @@ const bodyParser = require("body-parser");
 const session = require('express-session');
 const app = express();
 const port = 3000; // Porta que será usada
+const schedule = require('node-schedule');
 
 // Configura o banco de dados MySQL
 const connection = mysql.createConnection({
@@ -223,19 +228,110 @@ app.post('/upRoom', (req, res) => {
     });
 });
 
-// Rota para a página de pagamento
-app.get('/payment', (req, res) => {
-    const { numeroQuarto, TipoQuarto, Preco } = req.query;
-    console.log('Dados passados para a view payment:', { numeroQuarto, TipoQuarto, Preco });
-    res.render('payment', { numeroQuarto, TipoQuarto, Preco });
+// Rota para renderizar a página de lista de reservas
+app.get("/reserveList", (req, res) => {
+    const { status, tipo } = req.query;
+
+    let query = `
+        SELECT 
+            QUARTO.NumeroQuarto, 
+            QUARTO.TipoQuarto, 
+            QUARTO.Status,
+            QUARTO.Preco
+        FROM 
+            QUARTO
+        LEFT JOIN 
+            RESERVA ON QUARTO.Id_quarto = RESERVA.FK_Id_quarto
+    `;
+    let queryParams = [];
+
+    if (status || tipo) {
+        query += " WHERE";
+        if (status) {
+            query += " QUARTO.Status = ?";
+            queryParams.push(status);
+        }
+        if (status && tipo) {
+            query += " AND";
+        }
+        if (tipo) {
+            query += " QUARTO.TipoQuarto = ?";
+            queryParams.push(tipo);
+        }
+    }
+    // Ordena numericamente por NumeroQuarto
+    query += " ORDER BY QUARTO.NumeroQuarto";
+
+    console.log('Query:', query); // Log da consulta SQL
+    console.log('Query Params:', queryParams); // Log dos parâmetros da consulta
+
+    connection.query(query, queryParams, (err, results) => {
+        if (err) {
+            console.error('Erro ao consultar reservas:', err);
+            res.status(500).send('Erro ao consultar reservas');
+            return;
+        }
+
+        console.log('Resultados da consulta:', results); // Log dos resultados da consulta
+
+        res.render("reserveList", { quartos: results });
+    });
 });
 
-// Rota para finalizar a reserva
+
+// Rota para a página de pagamento
+app.get('/payment', (req, res) => {
+    const { NumeroQuarto, TipoQuarto } = req.query;
+
+    console.log('Dados recebidos na rota /payment:', { NumeroQuarto, TipoQuarto }); // Log dos dados recebidos
+
+    // Buscar o preço do quarto no banco de dados
+    connection.query(
+        'SELECT Preco FROM QUARTO WHERE NumeroQuarto = ? AND TipoQuarto = ?',
+        [NumeroQuarto, TipoQuarto],
+        (err, results) => {
+            if (err) {
+                console.error('Erro ao buscar preço do quarto:', err);
+                res.status(500).send('Erro ao buscar preço do quarto');
+                return;
+            }
+
+            console.log('Resultados da consulta de preço:', results); // Log dos resultados da consulta de preço
+
+            if (results.length === 0) {
+                res.status(400).send('Quarto não encontrado');
+                return;
+            }
+
+            // Recupera o preço e remove símbolos e formata
+            let Preco = results[0].Preco;
+            if (Preco) {
+                Preco = Preco.replace('R$', '').replace(',', '.');
+                Preco = parseFloat(Preco);
+            } else {
+                Preco = 0;
+            }
+
+            console.log('Dados passados para a view payment:', { NumeroQuarto, TipoQuarto, Preco });
+            res.render('payment', { NumeroQuarto, TipoQuarto, Preco });
+        }
+    );
+});
+
+
+
+// Rota para finalizar reserva
 app.post('/finalizar-reserva', (req, res) => {
-    // Dados do formulário
     const { NumeroQuarto, TipoQuarto, Preco, DataCheckIn, DataCheckOut, metodoPagamento } = req.body;
 
-    // Passo 1: Obter o ID do quarto
+    console.log('Dados recebidos na rota /finalizar-reserva:', req.body);
+
+    if (!NumeroQuarto || !TipoQuarto) {
+        console.error('Dados do quarto não recebidos corretamente:', { NumeroQuarto, TipoQuarto });
+        res.status(400).send('Dados do quarto não recebidos corretamente');
+        return;
+    }
+
     connection.query(
         'SELECT Id_quarto FROM QUARTO WHERE NumeroQuarto = ? AND TipoQuarto = ? AND Status = "Disponível"',
         [NumeroQuarto, TipoQuarto],
@@ -247,14 +343,15 @@ app.post('/finalizar-reserva', (req, res) => {
             }
 
             if (results.length === 0) {
-                // Nenhum quarto disponível encontrado
+                console.error('Quarto não disponível:', { NumeroQuarto, TipoQuarto });
                 res.status(400).send('Quarto não disponível');
                 return;
             }
 
             const idQuarto = results[0].Id_quarto;
+            console.log('ID do quarto encontrado:', idQuarto);
 
-            // Passo 2: Atualizar o status do quarto para 'Ocupado'
+            // Atualizar o status do quarto para "Ocupado"
             connection.query(
                 'UPDATE QUARTO SET Status = ? WHERE Id_quarto = ?',
                 ['Ocupado', idQuarto],
@@ -265,53 +362,163 @@ app.post('/finalizar-reserva', (req, res) => {
                         return;
                     }
 
-                    // Passo 3: Inserir dados na tabela 'reserva'
+                    // Consultar se o método de pagamento já existe
                     connection.query(
-                        'INSERT INTO RESERVA (FK_Id_quarto, DataCheckIn, DataCheckOut, FK_Email, MetodoPagamento) VALUES (?, ?, ?, ?, ?)',
-                        [idQuarto, DataCheckIn, DataCheckOut, req.session.email, metodoPagamento],
-                        (err3) => {
+                        'SELECT id_metodoPag FROM metodo_pagamento WHERE nome_metodoPag = ?',
+                        [metodoPagamento],
+                        (err3, results) => {
                             if (err3) {
-                                console.error('Erro ao inserir reserva:', err3);
+                                console.error('Erro ao consultar método de pagamento:', err3);
                                 res.status(500).send('Erro ao finalizar a reserva');
                                 return;
                             }
 
-                            // Sucesso na inserção
-                            res.status(200).send('Reserva finalizada com sucesso');
+                            let metodoPagamentoId;
+
+                            if (results.length > 0) {
+                                // Método de pagamento já existe, pegar o id_metodoPag existente
+                                metodoPagamentoId = results[0].id_metodoPag;
+                                inserirReserva(idQuarto, metodoPagamentoId);
+                            } else {
+                                // Método de pagamento não existe, inserir novo método de pagamento
+                                connection.query(
+                                    'INSERT INTO metodo_pagamento (nome_metodoPag) VALUES (?)',
+                                    [metodoPagamento],
+                                    (err4, result) => {
+                                        if (err4) {
+                                            console.error('Erro ao inserir método de pagamento:', err4);
+                                            res.status(500).send('Erro ao finalizar a reserva');
+                                            return;
+                                        } else {
+                                            metodoPagamentoId = result.insertId;
+                                            inserirReserva(idQuarto, metodoPagamentoId);
+                                        }
+                                    }
+                                );
+                            }
                         }
                     );
                 }
             );
         }
     );
+
+    // Função para inserir a reserva após garantir que o método de pagamento está registrado
+    function inserirReserva(idQuarto, metodoPagamentoId) {
+        connection.query(
+            'INSERT INTO reserva (FK_Id_quarto, DataCheckIn, DataCheckOut, FK_Email, FK_Id_pagamento) VALUES (?, ?, ?, ?, ?)',
+            [idQuarto, DataCheckIn, DataCheckOut, req.session.email, metodoPagamentoId],
+            (err5) => {
+                if (err5) {
+                    console.error('Erro ao inserir reserva:', err5);
+                    res.status(500).send('Erro ao finalizar a reserva');
+                } else {
+                    console.log('Reserva inserida com sucesso');
+                    res.status(200).send('Reserva finalizada com sucesso');
+
+
+                    // Atualizar o status do quarto para "Disponível" após o checkout
+                    const checkOutDate = new Date(DataCheckOut);
+                    setTimeout(() => {
+                        connection.query(
+                            'UPDATE QUARTO SET Status = ? WHERE Id_quarto = ?',
+                            ['Disponível', idQuarto],
+                            (err6) => {
+                                if (err6) {
+                                    console.error('Erro ao atualizar o status do quarto na data de checkout:', err6);
+                                } else {
+                                    console.log('Status do quarto atualizado para "Disponível" na data de checkout');
+                                }
+                            }
+                        );
+                    }, checkOutDate.getTime() - new Date().getTime());
+
+                
+                    
+                }
+            }
+        );
+    }
 });
 
 
 
-// Rota para a página de histórico de reservas
 app.get('/historic', (req, res) => {
-    const clienteEmail = req.query.email; // Assumindo que o email vem da query string
+    const clienteEmail = req.session.email; // Obtém o e-mail da sessão
 
-    // Conexão com Banco de Dados
-    // Faz o select das reservas que o cliente fez
-    connection.query(`SELECT quarto.NumeroQuarto, quarto.TipoQuarto, quarto.Preco, reserva.DataCheckIn, reserva.DataCheckOut
-                      FROM quarto
-                      JOIN reserva ON quarto.Id_quarto = reserva.FK_Id_quarto
-                      JOIN cliente ON cliente.email = reserva.FK_Email
-                      WHERE cliente.email = ?`, [clienteEmail], (err2, reservas) => {
-        if (err2) {
-            console.error('Não contem reservas feitas:', err2);
-            res.status(500).send('Não existem reservas para serem exibidas');
-            return;
+    if (!clienteEmail) {
+        return res.status(400).send('Email do cliente não fornecido.');
+    }
+
+    const query = `
+        SELECT 
+            quarto.Id_quarto,
+            quarto.TipoQuarto,
+            IFNULL(SUM(quarto.Preco), 0) AS totalGasto,
+            COUNT(reserva.Id_reserva) AS totalReservas,
+            reserva.DataCheckIn,
+            reserva.DataCheckOut
+        FROM 
+            reserva
+            JOIN quarto ON quarto.Id_quarto = reserva.FK_Id_quarto
+            JOIN cliente ON cliente.email = reserva.FK_Email
+        WHERE 
+            cliente.email = ?
+        GROUP BY 
+            quarto.TipoQuarto, quarto.Id_quarto, reserva.DataCheckIn, reserva.DataCheckOut WITH ROLLUP
+    `;
+
+    connection.query(query, [clienteEmail], (err, results) => {
+        if (err) {
+            console.error('Erro ao obter reservas:', err);
+            return res.status(500).send('Erro ao obter reservas');
         }
-        
-        // Calcular o total gasto
-        const totalGasto = reservas.reduce((sum, reserva) => sum + parseFloat(reserva.Preco), 0);
 
-        res.render('historic', { reservas, totalGasto }); // Passa o totalGasto para a view
+        const reservas = [];
+        let totalGastoGeral = 0;
+        let totalReservasGeral = 0;
+        let currentTipoQuarto = null;
+        let subtotalGasto = 0;
+        let subtotalReservas = 0;
+
+        results.forEach(result => {
+            if (result.TipoQuarto === null) {
+                totalGastoGeral = result.totalGasto;
+                totalReservasGeral = result.totalReservas;
+            } else {
+                if (currentTipoQuarto && currentTipoQuarto !== result.TipoQuarto) {
+                    reservas.push({
+                        Id_quarto: 'Subtotal',
+                        TipoQuarto: currentTipoQuarto,
+                        Preco: subtotalGasto,
+                        DataCheckIn: null,
+                        DataCheckOut: null,
+                        totalReservas: subtotalReservas
+                    });
+                    subtotalGasto = 0;
+                    subtotalReservas = 0;
+                }
+                currentTipoQuarto = result.TipoQuarto;
+                subtotalGasto += result.totalGasto;
+                subtotalReservas += result.totalReservas;
+                reservas.push(result);
+            }
+        });
+
+        if (currentTipoQuarto) {
+            reservas.push({
+                Id_quarto: 'Subtotal',
+                TipoQuarto: currentTipoQuarto,
+                Preco: subtotalGasto,
+                DataCheckIn: null,
+                DataCheckOut: null,
+                totalReservas: subtotalReservas
+            });
+        }
+
+        res.render('historic', { reservas, totalGastoGeral, totalReservasGeral });
     });
 });
-
 
 // Inicia o servidor
 app.listen(port, () => {

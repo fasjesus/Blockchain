@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Quarto</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalhes do Quarto</h1>
+        <p><strong>Número do Quarto:</strong> <%= quarto.NumeroQuarto %></p>
+        <p><strong>Tipo:</strong> <%= quarto.TipoQuarto %></p>
+        <p><strong>Preço:</strong> R$ <%= quarto.Preco %></p>
+        <p><strong>Status:</strong> <%= quarto.Status %></p>
+        <button onclick="window.location.href='/todos-quartos'">Voltar</button>
+    </div>
+</body>
+</html>
