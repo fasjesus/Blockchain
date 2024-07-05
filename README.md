@@ -4,16 +4,16 @@ Este projeto é uma aplicação Web 3.0 que permite aos usuários reservar quart
 
 ## Estrutura do Projeto
 
-# build
+### build
 - **VirtualStore.json**  Configuração de contrato inteligente Solidity
-# contracts
+### contracts
 - **VirtualStore.sol** Estruturas de dados do VirtualStore.sol 
-# migrations
+### migrations
 - **1_deployed_contracts.js**: Script de migração para implantar o contrato inteligente.
-# public - pasta de imagens
+### public - pasta de imagens
 - **hotelHUB.jpeg**
-# test - gitkeep
-# views - telas da aplicação web
+### test - gitkeep
+### views - telas da aplicação web
 - **delete.js**
 - **detailsRoom.js**
 - **fullRoom.js**
