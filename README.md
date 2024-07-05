@@ -14,18 +14,16 @@ Este projeto é uma aplicação Web 3.0 que permite aos usuários reservar quart
 - **hotelHUB.jpeg**
 ### test - gitkeep
 ### views - telas da aplicação web
-- **delete.js**
-- **detailsRoom.js**
-- **fullRoom.js**
-- **index.js**
-- **upRoom.js** 
-- **login.js** 
-- **options.js** 
-- **products.js** 
-- **reserveList.js** 
-- **payment.js** 
-- **update.js**
-- **historic.js**
+- **delete.js** Tela de deleção de conta.
+- **detailsRoom.js** Tela de detalhes do quarto. 
+- **index.js** Tela de cadastro do usuário.
+- **upRoom.js** Tela de cadastro de quarto.
+- **login.js** Tela de login.
+- **options.js** Tela para direcionar as opções da aplicação.
+- **reserveList.js** Tela de listagem de quartos.
+- **payment.js** Tela de pagamento.
+- **update.js** Tela de atualização de conta.
+- **historic.js** Tela de histórico de reservas.
 
 **index.js**: Servidor Node.js com Express que fornece a interface de usuário e interage com o contrato inteligente.
 
@@ -51,8 +49,8 @@ Este arquivo contém o contrato inteligente VirtualStore escrito em Solidity. O 
 Este arquivo contém o servidor Node.js com Express que fornece a interface de usuário e interage com o contrato inteligente `VirtualStore`.
 
 #### Requisitos e Dependências
-- node: https://nodejs.org/en
-- ganache: https://archive.trufflesuite.com/ganache/
+- Node.Js e npm: https://nodejs.org/en
+- Ganache e Truffle: https://archive.trufflesuite.com/ganache/
 - JavaScript
 - Solidty
 - express
@@ -131,6 +129,9 @@ module.exports = {
 
 ### Comandos para execução
 
+`git clone <https://github.com/fasjesus/Blockchain/HotelHUB.git>`
+`cd <HotelHUB>`
+`npm install`
 `npx truffle compile `
 `npx truffle migrate --network development`
 `node index.js`
