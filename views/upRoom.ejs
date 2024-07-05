@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Quarto</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Link para o arquivo de estilos CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.2em;
+        }
+
+        input {
+            width: 95%;
+            padding: 8px;
+            font-size: 1.2em;
+            margin-top: 3px;
+            margin-bottom: 5px;
+
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 1.2em;
+            margin-top: 3px;
+            margin-bottom: 5px;
+        }
+
+        .cadastrar {
+            width: 100%;
+            padding: 8px;
+            font-size: 1.2em;
+            margin-top: 3px;
+            margin-bottom: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cadastrar:hover {
+            background-color: #45a049;
+        }
+
+        .voltar {
+            width: 50%;
+            padding: 6px;
+            font-size: 1.0em;
+            background-color: #4c28ee;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="quartoForm" action="/upRoom" method="POST" onsubmit="formatPrice()">
+        <h1>Cadastrar Quarto</h1>
+        <div>
+            <label for="TipoQuarto">Tipo do Quarto:</label>
+            <select id="TipoQuarto" name="TipoQuarto" required onchange="atualizarPreco()">
+                <option value="">Selecione</option>
+                <option value="Standard">Standard</option>
+                <option value="Luxo">Luxo</option>
+            </select>
+        </div>
+        <div>
+            <label for="Preco">Preço:</label>
+            <input type="text" id="Preco" name="Preco" readonly required>
+        </div>
+        <div>
+            <label for="Status">Status:</label>
+            <select id="Status" name="Status" required>
+                <option value="">Selecione</option>
+                <option value="Disponible">Disponible</option>
+                <option value="Ocupado">Ocupado</option>
+            </select>
+        </div>
+        <button type="submit" class="cadastrar">Cadastrar</button>
+        <button type="button" class="voltar" id="back">Voltar</button>
+    </form>
+
+
+    <script>
+        function atualizarPreco() {
+            const tipoQuarto = document.getElementById('TipoQuarto').value;
+            const preco = document.getElementById('Preco');
+
+            if (tipoQuarto === 'Standard') {
+                preco.value = '150.00';
+            } else if (tipoQuarto === 'Luxo') {
+                preco.value = '200.00';
+            } else {
+                preco.value = '';
+            }
+        }
+
+        function formatPrice() {
+            const preco = document.getElementById('Preco');
+            preco.value = preco.value.replace('R$', '').replace(',', '.');
+        }
+        const back = document.getElementById('back');
+        back.addEventListener('click', () => {
+            window.location.href = '/options';
+        });
+    </script>
+</body>
+
+</html>

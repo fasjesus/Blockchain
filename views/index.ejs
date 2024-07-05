@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>HotelHub: Reserva de Quartos</title>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 50px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f5f5f5;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .loginlink {
+            color: #050505;
+            margin-bottom: 5px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .loginlink:hover {
+            color: #33f;
+        }
+
+        .logo {
+            width: 80px;
+            margin-right: 30px;
+        }
+
+        .side-image {
+            width: 100%;
+            height: auto;
+            max-width: 2000px;
+            /* Define a largura máxima desejada */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row main">
+            <div class="col-md-3 d-flex justify-content-center align-items-center">
+                <img src="/hotelHUB.jpeg" alt="HotelHub" class="side-image">
+            </div>
+            <div class="col-md-6 d-flex flex-column align-items-center">
+                <form action="/cadastro" method="post">
+                    <div class="title">
+                        <h1>Cadastre-se!</h1>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputUserName1" class="form-label">Nome de Usuário</label>
+                        <input type="text" class="form-control" name="user_name" id="exampleInputUserName1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="exampleInputEmail1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Senha</label>
+                        <input type="password" class="form-control" name="senha" id="exampleInputPassword1" required>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <label for="exampleInputName1" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" name="nome_completo" id="exampleInputName1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputCPF1" class="form-label">Ether Address</label>
+                        <input type="text" class="form-control" name="etherAddress" id="etherAddress" required>
+                    </div>
+                    <a class="loginlink" href="/loginPage">Já tem uma conta? Clique Aqui!</a>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+            <div class="col-md-3 d-flex justify-content-center align-items-center">
+                <img src="/hotelHUB.jpeg" alt="HotelHub" class="side-image">
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

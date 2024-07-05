@@ -1,0 +1,120 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>HotelHub: Reserva de Quartos</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 50px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f5f5f5;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .refresh {
+            background-color: #52e970;
+            border-color: #52e970;
+        }
+
+        .refresh:hover {
+            background-color: #0f0;
+            border-color: #0f0;
+        }
+
+        .voltar {
+            width: 50%;
+            padding: 6px;
+            font-size: 1.0em;
+            background-color: #4c28ee;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 8px;
+            margin-left: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="title">
+            <h1>Atualizar Conta</h1>
+        </div>
+
+        <form action="/atualizarConta" method="post">
+            <div class="mb-3">
+                <input type="hidden" name="user_id" id="user_id" class="form-control" value=<%=session.id %> required>
+            </div>
+            <div class="mb-3">
+                <label for="user_name" class="form-label">Nome de Usuário:</label>
+                <input type="text" name="user_name" id="user_name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="nome_completo" class="form-label">Nome Completo:</label>
+                <input type="text" name="nome_completo" class="form-control" id="nome_completo" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" name="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="senha" class="form-label">Senha:</label>
+                <input type="password" name="senha" class="form-control" id="senha" required>
+            </div>
+            <div class="mb-3">
+                <label for="idade" class="form-label">Idade:</label>
+                <input type="number" name="idade" class="form-control" id="idade" required>
+            </div>
+            <div class="mb-3">
+                <label for="ethereumAddress" class="form-label">Ethereum Address:</label>
+                <input type="text" name="ethereumAddress" class="form-control" id="ethereumAddress" required>
+            </div>
+            <button type="submit" class="btn btn-primary refresh">Atualizar</button>
+            <button type="button" class="voltar" id="back">Voltar</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script>
+        const back = document.getElementById('back');
+        back.addEventListener('click', () => {
+            window.location.href = '/options';
+        });
+    </script>
+</body>
+
+</html>

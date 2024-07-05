@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Reservas</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Link para o arquivo de estilos CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 130vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .filters {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .filters select {
+            padding: 10px;
+            font-size: 1.2em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            width: 95%;
+            padding: 6px;
+            font-size: 1.0em;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        .reservar {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .reservar:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Lista de Reservas</h1>
+        <div class="filters">
+            <div>
+                <label for="status">Filtrar por Status:</label>
+                <select id="status" onchange="filterQuartos()">
+                    <option value="">Todos</option>
+                    <option value="Disponível">Disponível</option>
+                    <option value="Ocupado">Ocupado</option>
+                </select>
+            </div>
+            <div>
+                <label for="tipo">Filtrar por Tipo de Quarto:</label>
+                <select id="tipo" onchange="filterQuartos()">
+                    <option value="">Todos</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Luxo">Luxo</option>
+                </select>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Número do Quarto</th>
+                    <th>Tipo do Quarto</th>
+                    <th>Preço</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% quartos.forEach(quarto=> { %>
+                    <tr>
+                        <td>
+                            <%= quarto.id %>
+                        </td>
+                        <td>
+                            <%= quarto.type %>
+                        </td>
+                        <td>
+                            <% if (quarto.price) { %>
+                                R$<%= parseFloat(quarto.price).toFixed(2) %>
+                                    <% } else { %>
+                                        Não disponível
+                                        <% } %>
+                        </td>
+                        <td>
+                            <%= quarto.status %>
+                        </td>
+                        <td>
+                            <% if (quarto.status==='Disponible' ) { %>
+                                <button type="submit" class="reservar"
+                                    onclick="confirmarReserva('<%= quarto.id %>', '<%= quarto.type %>', '<%= quarto.price %>')">Reservar</button>
+                                <% } %>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function filterQuartos() {
+            const status = document.getElementById('status').value;
+            const tipo = document.getElementById('tipo').value;
+            let url = '/reserveList?';
+
+            if (status) {
+                url += `status=${status}&`;
+            }
+            if (tipo) {
+                url += `tipo=${tipo}&`;
+            }
+
+            window.location.href = url.slice(0, -1);
+        }
+
+        function confirmarReserva(NumeroQuarto, TipoQuarto, Preco) {
+            window.location.href = `/payment?NumeroQuarto=${NumeroQuarto}&TipoQuarto=${encodeURIComponent(TipoQuarto)}&Preco=${encodeURIComponent(Preco)}`;
+        }
+    </script>
+</body>
+
+</html>

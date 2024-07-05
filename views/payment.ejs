@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Reserva</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Link para o arquivo de estilos CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            background-color: white;
+            padding: 100px;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Confirmar Reserva</h1>
+        <form action="/finalizar-reserva" method="POST">
+            <div>
+                <label for="NumeroQuarto">Número do Quarto:</label>
+                <input type="number" id="NumeroQuarto" name="NumeroQuarto" value="<%= NumeroQuarto %>" readonly>
+                <br>
+                <label for="TipoQuarto">Tipo do Quarto</label>
+                <input type="text" id="TipoQuarto" name="TipoQuarto" value="<%= TipoQuarto %>" readonly>
+                <br>
+                <label for="Preco">Preco</label>
+                <input type="text" id="Preco" name="Preco" value="<%= Preco %>" readonly>
+                <br>
+                <label for="DataCheckIn">Data CheckIn</label>
+                <input type="date" id="DataCheckIn" name="DataCheckIn">
+                <br>
+                <label for="DataCheckOut">Data CheckOut</label>
+                <input type="date" id="DataCheckOut" name="DataCheckOut">
+                <br>
+            </div>
+            <button type="submit">Finalizar Reserva</button>
+        </form>
+    </div>
+</body>
+
+</html>
