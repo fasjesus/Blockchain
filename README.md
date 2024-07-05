@@ -7,7 +7,7 @@ Este projeto é uma aplicação Web 3.0 que permite aos usuários reservar quart
 ### build
 - **VirtualStore.json**  Configuração de contrato inteligente Solidity
 ### contracts
-- **VirtualStore.sol** Estruturas de dados do VirtualStore.sol 
+- **VirtualStore.sol** Contrato inteligente em Solidity que gerencia os produtos (quartos), usuários, e vendas (reservas).
 ### migrations
 - **1_deployed_contracts.js**: Script de migração para implantar o contrato inteligente.
 ### public - pasta de imagens
@@ -26,8 +26,8 @@ Este projeto é uma aplicação Web 3.0 que permite aos usuários reservar quart
 - **payment.js** 
 - **update.js**
 - **historic.js**
-- **VirtualStore.sol**: Contrato inteligente em Solidity que gerencia os produtos (quartos), usuários, e vendas (reservas).
-- **index.js**: Servidor Node.js com Express que fornece a interface de usuário e interage com o contrato inteligente.
+
+**index.js**: Servidor Node.js com Express que fornece a interface de usuário e interage com o contrato inteligente.
 
 ## Arquivo 1_deployed_contracts.js
 
