@@ -129,9 +129,16 @@ module.exports = {
 
 ### Comandos para execução
 
-`git clone <https://github.com/fasjesus/Blockchain/HotelHUB.git>`
-`cd <HotelHUB>`
-`npm install`
-`npx truffle compile `
-`npx truffle migrate --network development`
-`node index.js`
+- `git clone <https://github.com/fasjesus/Blockchain/HotelHUB.git>`
+- `cd <HotelHUB>`
+- `npm install`
+- `npx truffle compile `
+- `npx truffle migrate --network development`
+- `node index.js`
+
+### Colaboradores
+
+- `BrendaCas`
+- `fasjesus`
+- `SantanaIsrael`
+- `michel-j-j`
