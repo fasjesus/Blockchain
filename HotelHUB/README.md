@@ -1,4 +1,4 @@
-# Aplicação Web 3.0 de um Hotel - Hotel HUB
+# Aplicação Web 3.0 - Hotel HUB
 
 Este projeto é uma aplicação Web 3.0 que permite aos usuários reservar quartos e realizar pagamentos utilizando ETH. O projeto é composto por um contrato inteligente em Solidity que gerencia as reservas e os pagamentos, e um servidor Node.js com Express que fornece a interface de usuário e interage com o contrato inteligente.
 
@@ -49,7 +49,7 @@ Este arquivo contém o contrato inteligente VirtualStore escrito em Solidity. O 
 Este arquivo contém o servidor Node.js com Express que fornece a interface de usuário e interage com o contrato inteligente `VirtualStore`.
 
 #### Requisitos e Dependências
-- Node.Js e npm: https://nodejs.org/en
+- Node.Js e npm (utilizamos v20): https://nodejs.org/en
 - Ganache e Truffle: https://archive.trufflesuite.com/ganache/
 - JavaScript
 - Solidty
@@ -129,8 +129,8 @@ module.exports = {
 
 ### Comandos para execução
 
-- `git clone <https://github.com/fasjesus/Blockchain/HotelHUB.git>`
-- `cd <HotelHUB>`
+- `git clone https://github.com/fasjesus/Blockchain/HotelHUB.git`
+- `cd HotelHUB`
 - `npm install`
 - `npx truffle compile `
 - `npx truffle migrate --network development`
