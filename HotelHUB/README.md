@@ -76,7 +76,7 @@ app.use(session({
 ```
 ## Arquivo configuração do truffle
 
-Adicione a seguinte configuração no arquivo truffle-config.js:
+truffle-config.js:
 
 ```javascript
 module.exports = {
